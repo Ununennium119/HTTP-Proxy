@@ -1,5 +1,4 @@
 import re
-import ssl
 import threading
 from socket import socket, AF_INET, SOCK_STREAM
 
@@ -87,10 +86,8 @@ class HttpProxy:
         print(f'Connecting to destination {host}:{port}')
 
         # Create destination socket
-        context = ssl.create_default_context()
         destination_socket = socket(AF_INET, SOCK_STREAM)
         destination_socket.connect((host, port))
-        destination_socket = context.wrap_socket(destination_socket, server_hostname=host)
 
         try:
             # Send response to client
@@ -123,7 +120,7 @@ class HttpProxy:
 
 
 def main():
-    http_proxy = HttpProxy(8888, 4096)
+    http_proxy = HttpProxy(12345, 4096)
     http_proxy.run()
 
 
