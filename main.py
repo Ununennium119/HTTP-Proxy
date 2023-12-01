@@ -3,6 +3,11 @@ import threading
 from socket import socket, AF_INET, SOCK_STREAM
 
 
+def main():
+    http_proxy = HttpProxy(12345, 4096)
+    http_proxy.run()
+
+
 class HttpProxy:
     def __init__(self, port: int, buffer_size: int):
         self.port: int = port
@@ -117,11 +122,6 @@ class HttpProxy:
                 break
 
             dest_socket.sendall(data)
-
-
-def main():
-    http_proxy = HttpProxy(12345, 4096)
-    http_proxy.run()
 
 
 if __name__ == '__main__':
