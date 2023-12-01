@@ -35,7 +35,7 @@ class HttpProxy:
         try:
             request_str, host, port, request_method = self._parse_request(client_socket)
             if request_method == 'CONNECT':
-                self._send_https_request(client_socket, request_str, host, port)
+                self._send_https_request(client_socket, host, port)
             else:
                 self._send_http_request(client_socket, request_str, host, port)
         finally:
@@ -87,7 +87,7 @@ class HttpProxy:
             # Close destination socket
             destination_socket.close()
 
-    def _send_https_request(self, client_socket, request_str, host, port):
+    def _send_https_request(self, client_socket, host, port):
         print(f'Connecting to destination {host}:{port}')
 
         # Create destination socket
