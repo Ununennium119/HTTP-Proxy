@@ -78,11 +78,19 @@ class HttpProxy:
             # Send request to destination
             destination_socket.sendall(request)
 
-            # Receive response from destination
-            response = destination_socket.recv(self.buffer_size)
-
-            # Send response to client
-            client_socket.sendall(response)
+            # Create, run and wait for sender and receiver threads
+            sender_thread = threading.Thread(
+                target=self._relay_traffic,
+                args=(client_socket, destination_socket)
+            )
+            receiver_thread = threading.Thread(
+                target=self._relay_traffic,
+                args=(destination_socket, client_socket)
+            )
+            sender_thread.start()
+            receiver_thread.start()
+            sender_thread.join()
+            receiver_thread.join()
         finally:
             # Close destination socket
             destination_socket.close()
